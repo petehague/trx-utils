@@ -55,12 +55,13 @@ if __name__ == "__main__":
             df = pd.DataFrame(columns=["Filename", "Larvae", "Keys", "Hash","Internal Path"])
             with open(filename, 'r') as f:
                 for line in f:
-                    if not os.path.exists(line[:-1]):
-                        print("File not found:", line[:-1])
-                        row = {"Filename": line[:-1], "Larvae": 0, "Keys": 0, "Hash": "", "Internal Path": ""}
+                    cleanline = line.strip()
+                    if not os.path.exists(cleanline):
+                        print("File not found:", cleanline)
+                        row = {"Filename": cleanline, "Larvae": 0, "Keys": 0, "Hash": "", "Internal Path": ""}
                     else:
-                        print(line[:-1])
-                        row = process_trx(line[:-1])
-                        row["Filename"] = line[:-1]
+                        print(cleanline)
+                        row = process_trx(cleanline)
+                        row["Filename"] = cleanline
                     df.loc[len(df)] = row
             df.to_csv(sys.argv[2], index=False)
